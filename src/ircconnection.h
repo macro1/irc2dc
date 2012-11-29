@@ -31,7 +31,7 @@
 #ifndef IRCCONNECTION_H
 #define IRCCONNECTION_H
 
-#include <connection.h>
+#include "connection.h"
 
 /**
 	@author gelraen <gelraen.ua@gmail.com>

@@ -1,0 +1,14 @@
+2011-05-17	macro	lugarsh.ironwood@gmail.com
+
+	* config.cpp (ReadFromFile): Adjusted file handling of config file to
+	catch non-existent or permission errors.
+
+	* translator.cpp (setConfig): Relaxed the prefix requirements of
+	incoming IRC messages and added case insensitivity. Channel names are
+	not case sensitive and require case insensitivity.
+
+2012-01-19	macro lugarsh.ironwood@gmail.com
+	* translator.cpp (IRCtoDC): Intercepted vanity commands beginning with
+	'!' from being processed as messages.
+
+	* main.cpp (main): Added a temporary vanity command.

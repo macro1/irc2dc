@@ -34,8 +34,8 @@
 #include <map>
 
 
-#include <ircconfig.h>
-#include <dcconfig.h>
+#include "ircconfig.h"
+#include "dcconfig.h"
 
 /**
 	@author gelraen <gelraen.ua@gmail.com>

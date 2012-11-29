@@ -98,10 +98,8 @@ bool Config::ReadFromFile(const string& sConfFile)
 {
 	string str;
 	ifstream conf(sConfFile.c_str());
-	
-	if (conf.bad()) return false;
-	
-	while (!conf.eof())
+
+	while (conf)	//removed check for eof to allow for missing file
 	{
 		getline(conf,str);
 		
@@ -116,6 +114,8 @@ bool Config::ReadFromFile(const string& sConfFile)
 		vars[trim(str.substr(0, pos))] =
 				trim(trim(trim(str.substr(pos + 1)), '\''), '\"');
 	};
+	
+	if (conf.bad()) return false;
 	
 	int i;
 	for(i=0;varlist[i].type!='\0';i++)

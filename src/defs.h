@@ -34,6 +34,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <cstdio>
 #include <string>
 #include <syslog.h>
 

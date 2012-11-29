@@ -57,7 +57,7 @@ int main(int argc,char *argv[])
 	Translator trans;
 	IRCClient irc;
 	DCClient dc;
-	
+
 	string conffile=CONFFILE;
 	string pidfile;
 	bool daemonize=true;
@@ -181,13 +181,20 @@ int main(int argc,char *argv[])
 		
 		select(max+1,&rset,NULL,NULL,NULL);
 		
-		while(irc.readCommand(str))
-		{
-			if (trans.IRCtoDC(str,str))
-			{
+		while(irc.readCommand(str)) {
+			if (str.find(" 353 " + irc.getConfig().m_irc_nick + " = " + irc.getConfig().m_irc_channel + " :") != string::npos) {
+				dc.writeCommand( '<' + dc.getConfig().m_dc_nick + "> " + str.substr(str.find(':',1)+1) );
+			} else if (trans.IRCtoDC(str,str)) {
 				dc.writeCommand(str);
+			} else if (str[0] == '!') {	// vanity commands
+				if ( str.compare( string("!gag") ) == 0 ) {
+					irc.writeCommand( string("MODE " + irc.getConfig().m_irc_channel + " +M") );
+				} else if ( str.compare( string("!ungag") ) == 0 ) {
+					irc.writeCommand( string("MODE " + irc.getConfig().m_irc_channel + " -M") );
+				}
 			}
 		}
+
 		if (!dc.isLoggedIn())
 		{
 			LOG(log::warning, "DC++ connection closed. Trying to reconnect...");

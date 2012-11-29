@@ -30,8 +30,8 @@
  */
 
 #include <iostream>
-#include <ircconfig.h>
-#include <ircclient.h>
+#include "ircconfig.h"
+#include "ircclient.h"
 #include <poll.h>
 #include <sys/select.h>
 #include <string>

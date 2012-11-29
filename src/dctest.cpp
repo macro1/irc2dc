@@ -31,8 +31,8 @@
 
 #include <iostream>
 
-#include <dcconfig.h>
-#include <dcclient.h>
+#include "dcconfig.h"
+#include "dcclient.h"
 #include <poll.h>
 #include <sys/select.h>
 #include <string>

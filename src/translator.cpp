@@ -83,6 +83,15 @@ bool Translator::acceptableDCMessage(const string& str)
 	if (!m_bConfigured) return false;
 	int t;
 	regmatch_t match;
+	//make an exception for actions
+	if (!str.empty() && str[0] == '*') {
+		//reject our own actions
+		if (str.substr(0,string("* "+m_config.m_dc_nick+" ").length())
+				.compare("* "+m_config.m_dc_nick+" ") == 0) {
+			return false;
+		}
+		return true;
+	}
 	if ((t=regexec(&m_DCRe,str.c_str(),1,&match,0))!=0)
 	{
 		if (t!=REG_NOMATCH)
@@ -147,8 +156,9 @@ bool Translator::setConfig(const Config& conf)
 	int t;
 	char buf[256]={0};
 	if ((t=regcomp(&m_IRCRe,
-		 (string(":[^:!@ ]+((![^:!@ ]+)?@[^:!@ ]+)? PRIVMSG ")+
-			str + string(" :.*")).c_str(), REG_EXTENDED))!=0)
+		 (string(":[^!@ ]+[^ ]* PRIVMSG ")+
+			str + string(" :.*")).c_str(),
+		 			REG_ICASE | REG_EXTENDED))!=0)
 	{
 		sprintf(buf,"%d",t);
 		LOG(log::warning,
@@ -177,6 +187,7 @@ bool Translator::setConfig(const Config& conf)
  */
 bool Translator::IRCtoDC(const string& src,string& dst)
 {
+
 	if (!m_bConfigured||!acceptableIRCMessage(src)) return false;
 	
 	string nick,text;
@@ -199,8 +210,24 @@ bool Translator::IRCtoDC(const string& src,string& dst)
 		return false;
 	}
 	text=src.substr(pos+1); // rest of the src is a message
-	
-	dst=string("<")+m_config.m_dc_nick+string("> <")+nick+string("> ")+text;
+
+	if (text[0] == '!') {	// don't process vanity commands as a message
+		dst = text;
+		return false;	// handle vanity commands outside the translator
+	}
+
+	dst=string("<")+m_config.m_dc_nick+string("> ");
+
+	//convert actions
+	if ((text.size() >= (string("ACTION").size()+2)) && (text[0] ==  0x01)
+			&& (text[text.size()-1] == 0x01)
+			&& (text.substr(1,string("ACTION").size()).compare("ACTION") == 0)) {
+		text = text.substr(string("ACTION").length()+2,text.length()-(string("ACTION").length()+2)-1);
+		dst+=string("!me ")+nick+string(" ");
+	}
+	else
+		dst+=string("<")+nick+string("> ");
+	dst+=text;
 	
 	return true;
 }
@@ -212,12 +239,30 @@ bool Translator::IRCtoDC(const string& src,string& dst)
 bool Translator::DCtoIRC(const string& src,string& dst)
 {
 	if (!m_bConfigured||!acceptableDCMessage(src)) return false;
-	
+	string text(src);
 	/* here we don't need to parse something,
 	 * and acceptableDCMessage should reject our own messages
 	*/
 	
-	dst=string("PRIVMSG ")+m_config.m_irc_channel+string(" :")+src;
+	// parse actions
+	if (text[0] == '*') {
+		string::size_type pos(text.find(' ',2));
+		if (pos == string::npos)
+			return false;
+		string nick(src.substr(2,pos-2));
+		text = "/me ***" + nick
+			+ text.substr(pos,text.size()-1);
+	} else if (text[0] == '<') {	// parse commands from DC
+		string::size_type pos;
+		if ( (pos = text.find("> !",1)) != string::npos) {
+			if (text.substr(pos+3).compare("ircnames") == 0) {
+				dst=string("NAMES ")+m_config.m_irc_channel;
+				return true;
+			}
+		}
+	}
+
+	dst=string("PRIVMSG ")+m_config.m_irc_channel+string(" :")+text;
 	
 	return true;
 }

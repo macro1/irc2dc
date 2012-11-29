@@ -31,8 +31,8 @@
 #ifndef DCCLIENT_H
 #define DCCLIENT_H
 
-#include <dcconfig.h>
-#include <dcconnection.h>
+#include "dcconfig.h"
+#include "dcconnection.h"
 
 /**
 	@author gelraen <gelraen.ua@gmail.com>

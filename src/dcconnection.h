@@ -31,7 +31,7 @@
 #ifndef DCCONNECTION_H
 #define DCCONNECTION_H
 
-#include <connection.h>
+#include "connection.h"
 
 /**
 	@author gelraen <gelraen.ua@gmail.com>

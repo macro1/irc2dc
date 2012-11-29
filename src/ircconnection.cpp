@@ -68,7 +68,7 @@ bool IRCConnection::WriteCmdAsync(const string& s)
 	m_sendbuf+="\r\n";
 	
 	_write();
-	
+
 	return true;
 }
 

@@ -177,7 +177,7 @@ void Connection::_read()
 	int n=0;
 	for(;;)
 	{
-		while((n=read(m_socket,(void*)buf,4096))>0)
+		while((n=read(m_socket,buf,4096))>0) //removed void* casting of buf
 		{
 			m_recvbuf+=string(buf,n);
 			LOG(log::rawdata,(string("from ")+int2str(m_socket)+string(" > ")+

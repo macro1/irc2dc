@@ -215,7 +215,7 @@ bool IRCClient::readCommand(string& str)
 					str.substr(string("PING ").length(),string::npos));
 		r=m_connection.ReadCmdAsync(str);
 	}
-		
+
 	if (!m_connection.isConnected()) m_bLoggedIn=false;
 	return r;
 }

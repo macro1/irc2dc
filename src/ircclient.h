@@ -31,8 +31,8 @@
 #ifndef IRCCLIENT_H
 #define IRCCLIENT_H
 
-#include <ircconfig.h>
-#include <ircconnection.h>
+#include "ircconfig.h"
+#include "ircconnection.h"
 
 /**
 	@author gelraen <gelraen.ua@gmail.com>
