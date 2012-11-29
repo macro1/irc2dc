@@ -1,0 +1,41 @@
+;
+;  Here's examle of config file
+;
+;  Each line has next format
+;    [variable=value][;[comment]]
+;
+;  Next values are defaults (defined in ircconfig.cpp and dcconfig.cpp):
+;
+; IRC part:
+;irc_server="127.0.0.1"
+;irc_port=6667
+;irc_channel="#chat"
+;irc_nick="irc2dc"
+;irc_realname="IRC-to-DC++ gate bot"
+;irc_username="irc2dc"
+;irc_password=""
+;
+; DC++ part:
+;dc_server="127.0.0.1"
+;dc_port=411
+;dc_nick="irc2dc"
+;dc_pass=""
+;dc_description="IRC-to-DC++ gate bot"
+;dc_speed="100"
+;dc_speed_val=1
+;dc_email="i.dont.like@spam.com"
+;dc_share_size="1073741825"
+;
+; Other:
+;logfile=
+;use_syslog=0
+;pidfile=
+;loglevel=11 ; errors, warnings and notices
+; internally loglevel is a bitset, so you can specify needed logging levels by
+; adding corresponding values:
+; errors - 1
+; warnings - 2
+; raw data - 4
+; notices - 8
+; state - 16
+; commands - 32

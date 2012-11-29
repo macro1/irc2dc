@@ -1,0 +1,13 @@
+This release:
+ + normal logging
+ + config file
+ + daemon mode
+ + automatic reconnecting
+ + handling of multiline messages from DC++
+
+Next releases:
+ - CTCP "ACTION" handling
+ - class Poller
+ - iconv support
+ - multiuser mode
+ - handling of kicks/bans in IRC

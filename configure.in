@@ -1,0 +1,13 @@
+AC_INIT(configure.in)
+
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(irc2dc, 0.1)
+
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+AM_PROG_LIBTOOL
+
+AC_CHECK_MEMBER([struct sockaddr_in.sin_len], AC_DEFINE([HAVE_SIN_LEN],[1],[sockaddr_in.sin_len present]),[],[#include <netinet/in.h>])
+AC_CHECK_MEMBER([struct sockaddr_in6.sin6_len], AC_DEFINE([HAVE_SIN6_LEN],[1],[sockaddr_in6.sin6_len present]),[],[#include <netinet/in.h>])
+
+AC_OUTPUT(Makefile src/Makefile)
